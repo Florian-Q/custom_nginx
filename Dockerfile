@@ -116,6 +116,7 @@ COPY --from=nginx-build /etc/nginx /etc/nginx
 COPY --from=nginx-build /usr/local/nginx/html /usr/local/nginx/html
 
 # NGiNX Create log dirs
+# this log is refresh only if nginx is restart
 RUN mkdir -p /var/log/nginx/
 RUN touch /var/log/nginx/access.log
 RUN touch /var/log/nginx/error.log
@@ -139,11 +140,13 @@ RUN sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/mods
 
 ## Update nginx config
 COPY nginx /etc/nginx/
+RUN chmod +x /etc/nginx/default.sh
 
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
 
+ENTRYPOINT ["/bin/sh", "/etc/nginx/default.sh"]
 CMD ["/usr/local/nginx/nginx", "-g", "daemon off;"]
 
 # inspire to : https://hub.docker.com/r/krish512/modsecurity/dockerfile
