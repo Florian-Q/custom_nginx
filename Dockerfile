@@ -14,6 +14,14 @@ RUN apt-get update \
     git \
     curl \
     wget \
+    zlib1g-dev      \
+    libssl-dev      \
+    libpcre3-dev    \
+    libxml2-dev     \
+    libyajl-dev     \
+    lua5.2-dev      \
+    libgeoip-dev    \
+    libcurl4-openssl-dev \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/*
 
