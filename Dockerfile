@@ -115,16 +115,17 @@ make modules
 FROM ubuntu:latest
 ENV DEBIAN_FRONTEND noninteractive
 
-# Libraries for ModSecurity
+# Libraries for ModSecurity, and curl
 RUN apt update && \
 apt-get install --no-install-recommends --no-install-suggests -y \
-ca-certificates \
-libcurl4-openssl-dev  \
-libyajl-dev \
-lua5.2-dev \
-libgeoip-dev \
-vim \
-libxml2
+    ca-certificates \
+    libcurl4-openssl-dev  \
+    libyajl-dev \
+    lua5.2-dev \
+    libgeoip-dev \
+    curl \ 
+    vim \
+    libxml2
 RUN apt clean && \
 rm -rf /var/lib/apt/lists/*
 
