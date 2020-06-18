@@ -151,12 +151,11 @@ COPY --from=modsecurity /modsecurity/unicode.mapping /etc/nginx/modsecurity.d
 RUN cd /etc/nginx/modsecurity.d && \
     mv modsecurity.conf-recommended modsecurity.conf
 
-## Install ModSecurity CRS
-COPY --from=owasp-modsecurity-crs /owasp-modsecurity-crs /etc/nginx/owasp-modsecurity-crs
-RUN cat /etc/nginx/owasp-modsecurity-crs/crs-setup.conf.example /etc/nginx/owasp-modsecurity-crs/rules/*.conf >> /etc/nginx/modsecurity.d/crs.conf
-RUN cp /etc/nginx/owasp-modsecurity-crs/rules/*.data /etc/nginx/modsecurity.d/
-RUN rm -rf /etc/nginx/owasp-modsecurity-crs
-RUN echo "include /etc/nginx/modsecurity.d/crs.conf">>/etc/nginx/modsecurity.d/include.conf
+## Install OWASP ModSecurity Core Rule Set
+COPY --from=owasp-modsecurity-crs /owasp-modsecurity-crs/rules /etc/nginx/modsecurity.d
+COPY --from=owasp-modsecurity-crs /owasp-modsecurity-crs/crs-setup.conf /etc/nginx/modsecurity.d
+RUN echo "include /etc/nginx/modsecurity.d/crs-setup.conf">>/etc/nginx/modsecurity.d/include.conf
+RUN echo "include /etc/nginx/modsecurity.d/rules/*.conf">>/etc/nginx/modsecurity.d/include.conf
 RUN sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/modsecurity.d/modsecurity.conf
 
 ## Update nginx config
