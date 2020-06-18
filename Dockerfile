@@ -7,6 +7,7 @@ FROM nginx:latest AS nginx-build
 
 RUN apt-get update \
  && apt-get install -y -q --no-install-recommends \
+ # remove apt-utils \
     ca-certificates \
     automake \
     autoconf \
@@ -24,26 +25,6 @@ RUN apt-get update \
     libcurl4-openssl-dev \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/*
-
-# RUN apt-get update -qq && \
-#     apt install  -qq -y --no-install-recommends --no-install-suggests \
-#     apt-utils \
-#     ca-certificates \
-#     autoconf        \
-#     automake        \
-#     build-essential \
-#     libtool         \
-#     pkgconf         \
-#     curl            \
-#     git             \
-#     zlib1g-dev      \
-#     libssl-dev      \
-#     libpcre3-dev    \
-#     libxml2-dev     \
-#     libyajl-dev     \
-#     lua5.2-dev      \
-#     libgeoip-dev    \
-#     libcurl4-openssl-dev
 
 RUN cd /opt && \
 git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
