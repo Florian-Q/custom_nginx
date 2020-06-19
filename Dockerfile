@@ -133,7 +133,7 @@ RUN cd /etc/nginx/modsecurity.d && \
     mv modsecurity.conf-recommended modsecurity.conf
 
 ## Install OWASP ModSecurity Core Rule Set
-COPY --from=owasp-modsecurity-crs /owasp-modsecurity-crs/rules /etc/nginx/modsecurity.d
+COPY --from=owasp-modsecurity-crs /owasp-modsecurity-crs/rules /etc/nginx/modsecurity.d/rules
 COPY --from=owasp-modsecurity-crs /owasp-modsecurity-crs/crs-setup.conf /etc/nginx/modsecurity.d
 RUN echo "include /etc/nginx/modsecurity.d/crs-setup.conf">>/etc/nginx/modsecurity.d/include.conf
 RUN echo "include /etc/nginx/modsecurity.d/rules/*.conf">>/etc/nginx/modsecurity.d/include.conf
