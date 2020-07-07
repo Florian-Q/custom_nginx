@@ -123,6 +123,7 @@ RUN mkdir -p /var/log/nginx/
 RUN touch /var/log/nginx/access.log
 RUN touch /var/log/nginx/error.log
 # default error template html
+RUN mkdir -p /var/www
 RUN html="<!DOCTYPE html> \
 <html> \
 </html>" \
