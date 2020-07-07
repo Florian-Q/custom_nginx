@@ -122,6 +122,11 @@ COPY --from=nginx-build /usr/local/nginx/html /usr/local/nginx/html
 RUN mkdir -p /var/log/nginx/
 RUN touch /var/log/nginx/access.log
 RUN touch /var/log/nginx/error.log
+# default error template html
+RUN html="<!DOCTYPE html> \
+<html> \
+</html>" \
+&& echo "$html" > /var/www/error.html
 
 ## Install ModSecurity conf recommended 
 RUN sed -i '38i modsecurity on;\n\tmodsecurity_rules_file /etc/nginx/modsecurity.d/include.conf;' /etc/nginx/nginx.conf
@@ -139,11 +144,16 @@ RUN echo "include /etc/nginx/modsecurity.d/crs-setup.conf">>/etc/nginx/modsecuri
 RUN echo "include /etc/nginx/modsecurity.d/rules/*.conf">>/etc/nginx/modsecurity.d/include.conf
 RUN sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/modsecurity.d/modsecurity.conf
 
-## Update nginx config
+# Update nginx config
 COPY nginx /etc/nginx/
+RUN rm -f /etc/nginx/nginx.conf
+## Move nginx.conf file in /etc/nginx/conf.d/
+RUN ln -s /etc/nginx/nginx.conf ./conf.d/nginx.conf
 RUN chmod +x /etc/nginx/default.sh
+## log rotate
+RUN mv /etc/nginx/nginx_logrotate /etc/logrotate.d/
 
-EXPOSE 80
+EXPOSE 80 443
 
 STOPSIGNAL SIGTERM
 

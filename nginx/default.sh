@@ -10,4 +10,9 @@ if [ ! "$(ls -A /etc/nginx/conf.d)" ]; then
 	cp /etc/nginx/conf.d.default/* /etc/nginx/conf.d/
 fi
 
+if [ -e /etc/nginx/conf.d/nginx.conf ]; then
+	echo "-- nginx.conf not found, copy default file" 
+	cp /etc/nginx/conf.d.default/nginx.conf /etc/nginx/conf.d/nginx.conf
+fi
+
 exec "$@"
