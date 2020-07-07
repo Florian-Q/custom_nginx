@@ -146,12 +146,11 @@ RUN echo "include /etc/nginx/modsecurity.d/rules/*.conf">>/etc/nginx/modsecurity
 RUN sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/modsecurity.d/modsecurity.conf
 
 # Update nginx config
-WORKDIR /etc/nginx
 COPY nginx /etc/nginx/
-RUN rm -f /etc/nginx/conf.d/*
+RUN rm -f /etc/nginx/conf.d/nginx.conf && rm -f /etc/nginx/conf.d/nginx.conf.default
 ## Move nginx.conf file in /etc/nginx/conf.d/
-RUN mv /etc/nginx/nginx.conf /etc/nginx/conf.d/nginx.conf
-RUN ln -s ./conf.d/nginx.conf /etc/nginx/nginx.conf
+RUN cp /etc/nginx/conf.d.default/* /etc/nginx/conf.d/
+RUN cd /etc/nginx && ln -s ./conf.d/nginx.conf /etc/nginx/nginx.conf
 RUN chmod +x /etc/nginx/default.sh
 ## log rotate
 RUN mv /etc/nginx/nginx_logrotate /etc/logrotate.d/
