@@ -147,10 +147,10 @@ RUN sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/mods
 
 # Update nginx config
 COPY nginx /etc/nginx/
-RUN rm -f /etc/nginx/conf.d/nginx.conf && rm -f /etc/nginx/conf.d/nginx.conf.default
+RUN rm -f /etc/nginx/nginx.conf && rm -f /etc/nginx/nginx.conf.default
 ## Move nginx.conf file in /etc/nginx/conf.d/
 RUN cp -R /etc/nginx/conf.d.default/. /etc/nginx/conf.d
-RUN cd /etc/nginx && ln -s ./conf.d/nginx.conf /etc/nginx/nginx.conf
+RUN ln -s ./conf.d/nginx.conf /etc/nginx/nginx.conf
 RUN chmod +x /etc/nginx/default.sh
 ## log rotate
 RUN mv /etc/nginx/nginx_logrotate /etc/logrotate.d/
