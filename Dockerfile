@@ -100,6 +100,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt update && \
 apt-get install --no-install-recommends --no-install-suggests -y \
     ca-certificates \
+    logrotate \
     libcurl4-openssl-dev  \
     libyajl-dev \
     lua5.2-dev \

@@ -5,8 +5,8 @@
 	dateext
 	# If log file is missing, go on to next one without issuing an error msg
 	missingok
-	# Save logfiles for the last 2 days
-	rotate 2
+	# Save logfiles for the last 1 year
+	rotate 365
 	# Old versions of log files are compressed with gzip
 	compress
 	# Postpone compression of the previous log file to the next rotation cycle
