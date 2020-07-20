@@ -19,4 +19,9 @@ if [ ! -f "/etc/nginx/conf.d/nginx.conf" ]; then
 	fi
 fi
 
+if [ ! -f "/etc/nginx/conf.d/nginx_logrotate" ]; then
+	echo "-- nginx_logrotate not found, copy default file" 
+	cp /etc/nginx/conf.d.default/nginx_logrotate /etc/nginx/conf.d/nginx_logrotate
+fi
+
 exec "$@"
