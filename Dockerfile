@@ -152,11 +152,13 @@ COPY nginx /etc/nginx/
 RUN chmod +x /etc/nginx/default.sh
 ## Move nginx.conf file in /etc/nginx/conf.d/
 RUN rm -f /etc/nginx/nginx.conf && rm -f /etc/nginx/nginx.conf.default
-RUN cp -R /etc/nginx/conf.d.default/. /etc/nginx/conf.d
-RUN ln -s ./conf.d/nginx.conf /etc/nginx/nginx.conf
+RUN mkdir -p /etc/nginx/config
+RUN cp -R /etc/nginx/config.default/. /etc/nginx/config
+RUN ln -s ./config/nginx.conf /etc/nginx/nginx.conf
+RUN ln -s ./config/conf.d /etc/nginx/conf.d
 ## log rotate
 RUN mv /etc/nginx/crontab /etc/crontab
-RUN ln -s /etc/nginx/conf.d/nginx_logrotate /etc/logrotate.d
+RUN ln -s /etc/nginx/config/nginx_logrotate /etc/logrotate.d
 
 EXPOSE 80 443
 

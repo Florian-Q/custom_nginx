@@ -6,22 +6,24 @@
 # fi
 
 if [ ! "$(ls -A /etc/nginx/conf.d)" ]; then
-	echo "-- folder conf.d is empty, copy default file" 
-	cp /etc/nginx/conf.d.default/* /etc/nginx/conf.d/
+	echo "-- folder conf.d is empty, copy default file"
+	mkdir -p "/etc/nginx/config/conf.d"
+	cp /etc/nginx/config.default/conf.d/* /etc/nginx/config/conf.d
 fi
 
-if [ ! -f "/etc/nginx/conf.d/nginx.conf" ]; then
-	echo "-- nginx.conf not found, copy default file" 
-	cp /etc/nginx/conf.d.default/nginx.conf /etc/nginx/conf.d/nginx.conf
-	if [ ! -f "/etc/nginx/conf.d/main.conf" ]; then
-		echo "-- main.conf not found, copy default file" 
-		cp /etc/nginx/conf.d.default/main.conf /etc/nginx/conf.d/main.conf
+if [ ! -f "/etc/nginx/config/nginx.conf" ]; then
+	echo "-- nginx.conf not found, copy default file"
+	mkdir -p "/etc/nginx/config"
+	cp /etc/nginx/config.default/nginx.conf /etc/nginx/config/nginx.conf
+	if [ ! -f "/etc/nginx/config/conf.d/main.conf" ]; then
+		echo "-- conf.d/main.conf not found, copy default file" 
+		cp /etc/nginx/config.default/conf.d/main.conf /etc/nginx/config/conf.d
 	fi
 fi
 
-if [ ! -f "/etc/nginx/conf.d/nginx_logrotate" ]; then
+if [ ! -f "/etc/nginx/config/nginx_logrotate" ]; then
 	echo "-- nginx_logrotate not found, copy default file" 
-	cp /etc/nginx/conf.d.default/nginx_logrotate /etc/nginx/conf.d/nginx_logrotate
+	cp /etc/nginx/config.default/nginx_logrotate /etc/nginx/config/nginx_logrotate
 fi
 
 exec "$@"
