@@ -5,10 +5,10 @@
 #   echo "to update server_name in conf.d/default.conf"
 # fi
 
-if [ ! "$(ls -A /etc/nginx/conf.d)" ]; then
+if [ $(find -L /etc/nginx/conf.d -type f | wc -l) -eq 0 ]; then
 	echo "-- folder conf.d is empty, copy default file"
 	mkdir -p "/etc/nginx/config/conf.d"
-	cp /etc/nginx/config.default/conf.d/* /etc/nginx/config/conf.d
+	cp -r /etc/nginx/config.default/conf.d/* /etc/nginx/config/conf.d
 fi
 
 if [ ! -f "/etc/nginx/config/nginx.conf" ]; then
@@ -16,8 +16,9 @@ if [ ! -f "/etc/nginx/config/nginx.conf" ]; then
 	mkdir -p "/etc/nginx/config"
 	cp /etc/nginx/config.default/nginx.conf /etc/nginx/config/nginx.conf
 	if [ ! -f "/etc/nginx/config/conf.d/main.conf" ]; then
-		echo "-- conf.d/main.conf not found, copy default file" 
-		cp /etc/nginx/config.default/conf.d/main.conf /etc/nginx/config/conf.d
+		echo "-- conf.d/main.conf not found, copy default file"
+		mkdir -p "/etc/nginx/config/conf.d"
+		cp /etc/nginx/config.default/conf.d/* /etc/nginx/config/conf.d
 	fi
 fi
 

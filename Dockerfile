@@ -148,23 +148,22 @@ RUN echo "include /etc/nginx/modsecurity.d/rules/*.conf">>/etc/nginx/modsecurity
 RUN sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/modsecurity.d/modsecurity.conf
 
 # Update nginx config
-COPY nginx /etc/nginx/
-RUN chmod +x /etc/nginx/default.sh
+COPY ⁄ /
+RUN chmod +x /start.sh
 ## Move nginx.conf file in /etc/nginx/conf.d/
-RUN rm -f /etc/nginx/nginx.conf && rm -f /etc/nginx/nginx.conf.default
+RUN rm -rf /etc/nginx/nginx.conf && rm -f /etc/nginx/nginx.conf.default && rm -r /etc/nginx/conf.d
 RUN mkdir -p /etc/nginx/config
 RUN cp -R /etc/nginx/config.default/. /etc/nginx/config
 RUN ln -s ./config/nginx.conf /etc/nginx/nginx.conf
 RUN ln -s ./config/conf.d /etc/nginx/conf.d
 ## log rotate
-RUN mv /etc/nginx/crontab /etc/crontab
 RUN ln -s /etc/nginx/config/nginx_logrotate /etc/logrotate.d
 
 EXPOSE 80 443
 
 STOPSIGNAL SIGTERM
 
-ENTRYPOINT ["/bin/sh", "/etc/nginx/default.sh"]
+ENTRYPOINT ["/bin/sh", "/start.sh"]
 CMD ["/usr/local/nginx/nginx", "-g", "daemon off;"]
 
 # inspire to : https://hub.docker.com/r/krish512/modsecurity/dockerfile
