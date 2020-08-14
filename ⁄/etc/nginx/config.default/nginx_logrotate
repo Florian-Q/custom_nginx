@@ -1,4 +1,4 @@
-/var/log/nginx/*.log {
+/var/log/nginx/access.log {
 	#rotate the logfile(s) daily
 	daily
 	# adds extension like YYYYMMDD instead of simply adding a number
@@ -14,6 +14,19 @@
 	# Do not rotate the log if it is empty
 	notifempty
 	#after logfile is rotated and nginx.pid exists, send the USR1 signal
+	postrotate
+		[ ! -f /var/run/nginx.pid  ] || kill -USR1 `cat /var/run/nginx.pid`
+	endscript
+}
+
+/var/log/nginx/error.log {
+	monthly
+	dateext
+	missingok
+	rotate 1
+	compress
+	delaycompress
+	notifempty
 	postrotate
 		[ ! -f /var/run/nginx.pid  ] || kill -USR1 `cat /var/run/nginx.pid`
 	endscript
