@@ -158,6 +158,10 @@ RUN ln -s ./config/nginx.conf /etc/nginx/nginx.conf
 RUN ln -s ./config/conf.d /etc/nginx/conf.d
 ## log rotate
 RUN ln -s /etc/nginx/config/nginx_logrotate /etc/logrotate.d
+## change hours crontab
+RUN sed 's|*  *  *  *  *|*/1  *  *  *  *|1' /etc/crontab
+# sed 's/unix/1 0    * * 7/1' /etc/crontab
+# sed 's/unix/2 0    1 * */1' /etc/crontab
 
 EXPOSE 80 443
 
