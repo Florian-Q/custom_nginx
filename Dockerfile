@@ -159,7 +159,7 @@ RUN ln -s ./config/conf.d /etc/nginx/conf.d
 ## log rotate
 RUN ln -s /etc/nginx/config/nginx_logrotate /etc/logrotate.d
 ## change hours crontab
-RUN sed -i 's/17 \*\t* \* \*/0 \*\t\* \* \*/' /etc/crontab
+RUN sed -i 's/17 \*\t\* \* \*/0 \*\t\* \* \*/' /etc/crontab
 RUN sed -i 's/25 6\t\* \* \*/2 0\t\* \* \*/' /etc/crontab
 RUN sed -i 's/47 6\t\* \* 7/4 0\t\* \* 7/' /etc/crontab
 RUN sed -i 's/52 6\t1 \* \*/6 0\t1 \* \*/' /etc/crontab
@@ -170,6 +170,6 @@ EXPOSE 80 443
 STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["/bin/sh", "/start.sh"]
-CMD ["/usr/local/nginx/nginx", "-g", "daemon off;"]
+CMD ["/usr/local/nginx/nginx","cron","-g", "daemon off;"]
 
 # inspire to : https://hub.docker.com/r/krish512/modsecurity/dockerfile
