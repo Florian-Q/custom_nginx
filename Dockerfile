@@ -159,10 +159,11 @@ RUN ln -s ./config/conf.d /etc/nginx/conf.d
 ## log rotate
 RUN ln -s /etc/nginx/config/nginx_logrotate /etc/logrotate.d
 ## change hours crontab
-RUN sed -i ':a;N;$bb;ba;:b;s/17 \*    \* \* \*/0 \*    \* \* \*/;p' /etc/crontab
-RUN sed -i ':a;N;$bb;ba;:b;s/25 6    \* \* \*/2 0    \* \* \*/;p' /etc/crontab
-RUN sed -i ':a;N;$bb;ba;:b;s/47 6    \* \* 7/4 0    \* \* 7/;p' /etc/crontab
-RUN sed -i ':a;N;$bb;ba;:b;s/52 6    1 \* \*/6 0    1 \* \*/;p' /etc/crontab
+RUN sed -i 's/17 \*\t* \* \*/0 \*\t\* \* \*/' /etc/crontab
+RUN sed -i 's/25 6\t\* \* \*/2 0\t\* \* \*/' /etc/crontab
+RUN sed -i 's/47 6\t\* \* 7/4 0\t\* \* 7/' /etc/crontab
+RUN sed -i 's/52 6\t1 \* \*/6 0\t1 \* \*/' /etc/crontab
+RUN chmod +x /etc/crontab
 
 EXPOSE 80 443
 
