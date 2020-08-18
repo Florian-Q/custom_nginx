@@ -169,6 +169,6 @@ EXPOSE 80 443
 STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["/bin/sh", "/start.sh"]
-CMD ["/usr/local/nginx/nginx","-g","daemon off",";","cron","-f"]
+CMD ["/usr/local/nginx/nginx","-g","daemon off;","cron","-f"]
 
 # inspire to : https://hub.docker.com/r/krish512/modsecurity/dockerfile
