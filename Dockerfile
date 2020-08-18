@@ -100,8 +100,6 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt update && \
 apt-get install --no-install-recommends --no-install-suggests -y \
     ca-certificates \
-    cron \
-    logrotate \
     libcurl4-openssl-dev  \
     libyajl-dev \
     lua5.2-dev \
@@ -120,7 +118,6 @@ COPY --from=nginx-build /etc/nginx /etc/nginx
 COPY --from=nginx-build /usr/local/nginx/html /usr/local/nginx/html
 
 # NGiNX Create log dirs
-# this log is refresh only if nginx is restart
 RUN mkdir -p /var/log/nginx/
 RUN touch /var/log/nginx/access.log
 RUN touch /var/log/nginx/error.log
@@ -150,25 +147,19 @@ RUN sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/nginx/mods
 # Update nginx config
 COPY ⁄ /
 RUN chmod +x /start.sh
-## Move nginx.conf file in /etc/nginx/conf.d/
+## Move nginx.conf file in /etc/nginx/config/
 RUN rm -rf /etc/nginx/nginx.conf && rm -f /etc/nginx/nginx.conf.default && rm -r /etc/nginx/conf.d
 RUN mkdir -p /etc/nginx/config
 RUN cp -R /etc/nginx/config.default/. /etc/nginx/config
 RUN ln -s ./config/nginx.conf /etc/nginx/nginx.conf
 RUN ln -s ./config/conf.d /etc/nginx/conf.d
-## log rotate
-RUN ln -s /etc/nginx/config/nginx_logrotate /etc/logrotate.d
-## change hours crontab
-RUN sed -i 's/17 \*\t\* \* \*/0 \*\t\* \* \*/' /etc/crontab
-RUN sed -i 's/25 6\t\* \* \*/2 0\t\* \* \*/' /etc/crontab
-RUN sed -i 's/47 6\t\* \* 7/4 0\t\* \* 7/' /etc/crontab
-RUN sed -i 's/52 6\t1 \* \*/6 0\t1 \* \*/' /etc/crontab
+
 
 EXPOSE 80 443
 
 STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["/bin/sh", "/start.sh"]
-CMD ["/usr/local/nginx/nginx","-g","daemon off;","cron","-f"]
+CMD ["/usr/local/nginx/nginx","-g","daemon off;"]
 
 # inspire to : https://hub.docker.com/r/krish512/modsecurity/dockerfile
